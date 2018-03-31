@@ -1,0 +1,6 @@
+indexes:
+
+- kind: Item
+  ancestor: yes
+  properties:
+  - name: name
