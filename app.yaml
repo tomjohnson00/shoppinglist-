@@ -2,7 +2,6 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
-# [START handlers]
 handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
@@ -14,13 +13,9 @@ handlers:
 - url: /.*
   script: shop.app
   login: required
-# [END handlers]
 
-# [START libraries]
 libraries:
 - name: webapp2
   version: latest
 - name: jinja2
   version: latest
-# [END libraries]
-

@@ -7,14 +7,13 @@
 
 	    <!--links to the css and bootstarp and styling-->
 	    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
-	    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	    
 	   
         <!--where I style my webpage with css-->
 	    <style>
-            /*where I style the heading*/
+
 	    	#listName{
 	    		text-align: center;
                 width: 80%;
@@ -23,7 +22,6 @@
                 max-width: 800px;
 	    	}
 
-            /*where I style the list*/
 	    	.shopList{	    		
 	    		text-align: center;
 	    		width: 80%;
@@ -32,17 +30,14 @@
 	    		max-width: 800px;
 	    	}
 
-            /*styling the add button*/
 	    	.submitButton{
 	    		width: 70px;
 	    	}
 
-            /*styling the remove button*/
 	    	.removeButton{
 	    		color: red;
 	    	}
 
-            /*styling the edit button*/
     	   .editButton{
 	    		color: green;
 	    	}
@@ -56,7 +51,7 @@
  	
     <body>
 
- 		<!--create id listName for div-->
+ 		<!--create headding & delete all button-->
     	<div class="row" id="listName">	
             <div class="col-2">
             </div>
@@ -72,10 +67,8 @@
 
     	</div>
 
-        <!--create class shopList for div-->
+        <!--create list-->
  		<div class="shopList">
-
-    	<!--create unorderd list-->
         {% for item in items %}
             <div class="card">
                 <div class="card-body row" id="card{{item.key.id()}}" >
@@ -92,13 +85,13 @@
                         </form>
                     </div>                  
                 </div>
-
+                <!--edit list-->
                 <div class="card-body row" id="input{{item.key.id()}}" style="display: none">
                     <div class="col-1">
                     </div>  
-                    <input form="updateForm" name="name" type="text" class=" col-9 editItem" value="{{item.name}}" />
+                    <input form="updateForm{{item.key.id()}}" name="name" type="text" class=" col-9 editItem" value="{{item.name}}" />
                     <div class="col-2">
-                       <form id="updateForm" action="/updateItem" method="post">
+                       <form id="updateForm{{item.key.id()}}" action="/updateItem" method="post">
                             <input type="submit" class="btn btn-large btn-primary" value="Save">             
                             <input name="itemName" value="{{item.key}}" hidden>
                             <input name="id" value="{{item.key.urlsafe()}}" hidden>
@@ -115,7 +108,7 @@
         {% endfor %} 
 
 
-    		<!--create class addItem for form-->
+    		<!--ability to add to list-->
     		<form action="/addItem" method="post">
     			<input type="text" name="itemName" placeholder="Add item..." class="form-control" required>
     			<br/>
@@ -124,6 +117,7 @@
     		{{logout|safe}}
     	</div>    
  	</body>
+    <!--java script-->
     <script type="text/javascript">
         function edit(itemId){
             console.log("RUN")

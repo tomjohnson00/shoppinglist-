@@ -6,23 +6,23 @@ import webapp2
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-#
+#direct jinja enviroment
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
 
-
+#returns key for item
 def shoppinglist_key(email):
-
     return ndb.Key('Item', email)
 
-
+#returns name in string
 class Item(ndb.Model):
     name = ndb.StringProperty(indexed=True)
 
 
+#runs when the main page is called
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
@@ -46,8 +46,7 @@ class MainPage(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
-
-
+#adds item to database
 class AddItem(webapp2.RequestHandler):
 
     def post(self):
@@ -58,6 +57,7 @@ class AddItem(webapp2.RequestHandler):
         item.put()
         self.redirect('/')
 
+#removes item form database
 class RemoveItem(webapp2.RequestHandler):
     def post(self):
 
@@ -66,6 +66,7 @@ class RemoveItem(webapp2.RequestHandler):
         
         self.redirect('/')
 
+#updates database when item is eddited
 class UpdateItem(webapp2.RequestHandler):
     def post(self):
 
@@ -75,18 +76,18 @@ class UpdateItem(webapp2.RequestHandler):
         item.put()
         self.redirect('/')
 
+#deletes all items on list 
 class DeleteAll(webapp2.RequestHandler):
     def get(self):
         user_email=users.get_current_user().email()
         items_query = Item.query(ancestor=shoppinglist_key(user_email)).order(Item.name)
         items = items_query.fetch() 
         for item in items:
-           # ndb.Key(urlsafe=item.key.id()).delete()  
            item.key.delete()         
         self.redirect('/')
 
 
-# [START app]
+#starts the app
 app = webapp2.WSGIApplication([
 
     ('/', MainPage),
@@ -96,4 +97,3 @@ app = webapp2.WSGIApplication([
     ('/deleteAll', DeleteAll)
 
 ], debug=True)
-# [END app]
